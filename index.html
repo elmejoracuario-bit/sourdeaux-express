@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#006633">
+    <title>Sourdeaux Express</title>
+    <style>
+        /* ========== RESET & VARIABLES ========== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #006633;
+            --primary-light: #008040;
+            --primary-dark: #004d26;
+            --accent: #ffcc00;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+            --text: #1a1a2e;
+            --text-sec: #555;
+            --border: #dde1e6;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --radius: 14px;
+            --whatsapp: #25D366;
+            --danger: #e63946;
+            --success: #2d6a4f;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f0f1a;
+            --card: #1a1a2e;
+            --text: #e8e8e8;
+            --text-sec: #999;
+            --border: #2a2a40;
+            --shadow: 0 2px 12px rgba(0,0,0,0.3);
+        }
+
+        /* ========== BASE ========== */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ========== LAYOUT ========== */
+        .app {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 0 100px 0;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: #fff;
+            padding: 24px 20px 20px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        .theme-btn {
+            position: absolute;
+            top: 20px;
+            right: 16px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            backdrop-filter: blur(4px);
+        }
+
+        .theme-btn:active { background: rgba(255,255,255,0.35); }
+
+        /* ========== STATUS BAR ========== */
+        .status {
+            padding: 10px 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            background: var(--card);
+        }
+        .status.ok { color: var(--success); }
+        .status.err { color: var(--danger); }
+        .status.loading { color: var(--text-sec); }
+
+        /* ========== CARDS ========== */
+        .card {
+            background: var(--card);
+            margin: 16px;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ========== TABS (DIRECCIÓN) ========== */
+        .tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 8px;
+            border: 2px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-align: center;
+            transition: all 0.25s;
+            -webkit-appearance: none;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,102,51,0.3);
+        }
+
+        .tab:active { transform: scale(0.97); }
+
+        /* ========== SELECT ========== */
+        .select-wrap {
+            margin-top: 14px;
+        }
+
+        .select-wrap label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-sec);
+        }
+
+        .select-wrap select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--card);
+            color: var(--text);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+
+        .select-wrap select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* ========== TRAIN CARDS ========== */
+        .train-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .train {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .train::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: var(--primary);
+            border-radius: 4px 0 0 4px;
+        }
+
+        .train-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .train-id {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .train-clock {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .train-countdown {
+            display: inline-block;
+            background: var(--accent);
+            color: #1a1a2e;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .train-countdown.urgent {
+            background: var(--danger);
+            color: #fff;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .train-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            flex: 1;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+            -webkit-appearance: none;
+        }
+
+        .btn:active { transform: scale(0.96); }
+
+        .btn-wa {
+            background: var(--whatsapp);
+            color: #fff;
+        }
+
+        .btn-copy {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-calc {
+            background: var(--accent);
+            color: #1a1a2e;
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            margin-top: 12px;
+        }
+
+        /* ========== CALCULATOR RESULT ========== */
+        .calc-result {
+            margin-top: 16px;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .calc-result.success {
+            background: linear-gradient(135deg, var(--success), var(--primary));
+            color: #fff;
+        }
+
+        .calc-result.warning {
+            background: var(--accent);
+            color: #1a1a2e;
+        }
+
+        .calc-result .big {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 8px 0;
+        }
+
+        .calc-result .small {
+            font-size: 0.82rem;
+            opacity: 0.85;
+        }
+
+        /* ========== EMPTY STATE ========== */
+        .empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-sec);
+        }
+
+        .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+        .empty-text { font-size: 0.95rem; font-weight: 500; }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 0.78rem;
+            color: var(--text-sec);
+            line-height: 1.8;
+        }
+
+        /* ========== TOAST ========== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1a1a2e;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 380px) {
+            .header h1 { font-size: 1.35rem; }
+            .train-clock { font-size: 1.5rem; }
+            .card { padding: 16px; margin: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🚂 Sourdeaux Express</h1>
+            <p>Belgrano Norte · Horario N°21</p>
+            <button class="theme-btn" onclick="toggleTheme()" aria-label="Cambiar tema">🌙</button>
+        </div>
+
+        <!-- STATUS -->
+        <div id="status" class="status loading">⏳ Cargando horarios...</div>
+
+        <!-- CONFIGURACIÓN -->
+        <div class="card">
+            <div class="card-title">📍 Configuración</div>
+
+            <div class="tabs">
+                <button class="tab active" data-dir="retiro" onclick="setDir('retiro', this)">🏙️ Hacia Retiro</button>
+                <button class="tab" data-dir="villa_rosa" onclick="setDir('villa_rosa', this)">🌳 Hacia Villa Rosa</button>
+            </div>
+
+            <div class="select-wrap">
+                <label for="daySelect">Tipo de día</label>
+                <select id="daySelect" onchange="render()">
+                    <option value="auto">📅 Auto-detectar (hoy)</option>
+                    <option value="lunes_a_viernes">Lunes a Viernes</option>
+                    <option value="sabados">Sábados</option>
+                    <option value="domingos_y_feriados">Domingos y Feriados</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- PRÓXIMOS TRENES -->
+        <div class="card">
+            <div class="card-title">🕐 Próximos trenes desde A. Sourdeaux</div>
+            <div id="trainList" class="train-list">
+                <div class="empty">
+                    <div class="empty-icon">⏳</div>
+                    <div class="empty-text">Cargando...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CALCULADORA -->
+        <div class="card">
+            <div class="card-title">🎯 ¿A qué hora llego a...?</div>
+            <div class="select-wrap">
+                <label for="destSelect">Estación de destino</label>
+                <select id="destSelect">
+                    <option value="">Elegí una estación...</option>
+                </select>
+            </div>
+            <button class="btn btn-calc" onclick="calcDest()">🔍 Calcular llegada</button>
+            <div id="calcResult"></div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            📅 Horario N°21 · Vigente desde 19 de mayo de 2026<br>
+            ⚡ Datos oficiales · Funciona offline
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+    /* ============================================================
+       SOURDEAUX EXPRESS — Lógica completa
+       ============================================================ */
+
+    // --- Estaciones en orden geográfico ---
+    const EST = [
+        "Retiro","Saldías","Ciudad Universitaria","A. del Valle","M. Padilla",
+        "Florida","Munro","Carapachay","V. Adelina","Boulogne","Montes",
+        "Don Torcuato","A. Sourdeaux","Ciudad Villa de Mayo","Ciudad Los Polvorines",
+        "Ciudad Ing. P. Nogues","Ciudad Grand Bourg","Tierras Altas",
+        "Ciudad Tortuguitas","M. Alberti","Del Viso","Cecilia Grierson","Villa Rosa"
+    ];
+
+    // --- Estado global ---
+    let DB = {
+        lunes_a_viernes: { retiro: [], villa_rosa: [] },
+        sabados:         { retiro: [], villa_rosa: [] },
+        domingos_y_feriados: { retiro: [], villa_rosa: [] }
+    };
+    let loaded = false;
+    let currentDir = 'retiro';
+
+    // =============================================================
+    // INICIALIZACIÓN
+    // =============================================================
+    (async function boot() {
+        fillDestSelect();
+        loadTheme();
+        autoDetectDay();
+        await loadAll();
+        render();
+        setInterval(render, 60000); // actualizar cada minuto
+    })();
+
+    // =============================================================
+    // CARGA Y NORMALIZACIÓN DE JSONs
+    // =============================================================
+    async function loadAll() {
+        const st = document.getElementById('status');
+        let ok = 0, fail = [];
+
+        const files = [
+            { file: 'horarios_lunes_a_viernes.json', key: 'lunes_a_viernes' },
+            { file: 'horarios_sabados.json',         key: 'sabados' },
+            { file: 'Qwen_json_20260627_9pxopqbdk.json', key: 'domingos_y_feriados' }
+        ];
+
+        for (const f of files) {
+            try {
+                const raw = await fetch(f.file).then(r => {
+                    if (!r.ok) throw new Error(r.status);
+                    return r.json();
+                });
+                const parsed = parseFile(raw, f.key);
+                DB[f.key].retiro = parsed.retiro;
+                DB[f.key].villa_rosa = parsed.villa_rosa;
+                ok++;
+                console.log(`✅ ${f.key}: ${parsed.retiro.length} retiro + ${parsed.villa_rosa.length} villa_rosa`);
+            } catch (e) {
+                fail.push(f.key);
+                console.error(`❌ ${f.file}:`, e);
+            }
+        }
+
+        loaded = ok > 0;
+
+        if (ok === 3) {
+            st.className = 'status ok';
+            const total = Object.values(DB).reduce((s, d) => s + d.retiro.length + d.villa_rosa.length, 0);
+            st.textContent = `✅ Horarios cargados · ${total} servicios totales`;
+        } else if (ok > 0) {
+            st.className = 'status err';
+            st.textContent = `⚠️ ${ok}/3 archivos cargados. Faltan: ${fail.join(', ')}`;
+        } else {
+            st.className = 'status err';
+            st.textContent = '❌ Error al cargar. Verificá que los 3 JSON estén en la misma carpeta.';
+        }
+    }
+
+    /**
+     * Parsea un JSON y devuelve { retiro: [...], villa_rosa: [...] }
+     * Soporta múltiples estructuras:
+     *   - { servicios_hacia_retiro: [...], servicios_hacia_villa_rosa: [...] }
+     *   - { servicios: { domingos_y_feriados: { hacia_retiro: [...], hacia_villa_rosa: [...] } } }
+     *   - { hacia_retiro: [...], hacia_villa_rosa: [...] }
+     */
+    function parseFile(raw, dayKey) {
+        let retiroRaw = [];
+        let villaRaw = [];
+
+        // Estructura 1: plana con prefijo "servicios_"
+        if (raw.servicios_hacia_retiro) {
+            retiroRaw = raw.servicios_hacia_retiro;
+            villaRaw = raw.servicios_hacia_villa_rosa || [];
+        }
+        // Estructura 2: anidada bajo "servicios"
+        else if (raw.servicios && typeof raw.servicios === 'object') {
+            const inner = raw.servicios[dayKey] || raw.servicios;
+            retiroRaw = inner.hacia_retiro || [];
+            villaRaw = inner.hacia_villa_rosa || [];
+        }
+        // Estructura 3: directa
+        else if (raw.hacia_retiro) {
+            retiroRaw = raw.hacia_retiro;
+            villaRaw = raw.hacia_villa_rosa || [];
+        }
+
+        return {
+            retiro: retiroRaw.map(normalizeService),
+            villa_rosa: villaRaw.map(normalizeService)
+        };
+    }
+
+    /**
+     * Normaliza un servicio: elimina espacios extra en keys y valores
+     * Ej: { "A. Sourdeaux ": "06:54 " } → { "A. Sourdeaux": "06:54" }
+     */
+    function normalizeService(svc) {
+        const clean = {};
+        for (const [k, v] of Object.entries(svc)) {
+            const key = k.trim();
+            const val = typeof v === 'string' ? v.trim() : v;
+            clean[key] = val;
+        }
+        return clean;
+    }
+
+    // =============================================================
+    // UI: DIRECCIÓN
+    // =============================================================
+    function setDir(dir, btn) {
+        currentDir = dir;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        document.getElementById('calcResult').innerHTML = '';
+        render();
+    }
+
+    // =============================================================
+    // UI: AUTO-DETECTAR DÍA
+    // =============================================================
+    function autoDetectDay() {
+        const day = new Date().getDay(); // 0=dom, 6=sab
+        const sel = document.getElementById('daySelect');
+        if (day === 0) sel.value = 'domingos_y_feriados';
+        else if (day === 6) sel.value = 'sabados';
+        else sel.value = 'lunes_a_viernes';
+    }
+
+    function getActiveDay() {
+        const v = document.getElementById('daySelect').value;
+        if (v === 'auto') {
+            const d = new Date().getDay();
+            if (d === 0) return 'domingos_y_feriados';
+            if (d === 6) return 'sabados';
+            return 'lunes_a_viernes';
+        }
+        return v;
+    }
+
+    // =============================================================
+    // UI: POBLAR SELECTOR DE DESTINOS
+    // =============================================================
+    function fillDestSelect() {
+        const sel = document.getElementById('destSelect');
+        EST.forEach(e => {
+            if (e !== 'A. Sourdeaux') {
+                const o = document.createElement('option');
+                o.value = e;
+                o.textContent = e;
+                sel.appendChild(o);
+            }
+        });
+    }
+
+    // =============================================================
+    // RENDER: PRÓXIMOS TRENES
+    // =============================================================
+    function render() {
+        const box = document.getElementById('trainList');
+
+        if (!loaded) {
+            box.innerHTML = emptyHTML('⏳', 'Cargando horarios...');
+            return;
+        }
+
+        const day = getActiveDay();
+        const servicios = DB[day][currentDir] || [];
+        const now = nowHHMM();
+
+        // Filtrar: trenes que pasan por A. Sourdeaux y aún no pasaron
+        const futuros = servicios
+            .filter(s => {
+                const h = s['A. Sourdeaux'];
+                return h && h !== '-' && h >= now;
+            })
+            .slice(0, 8);
+
+        if (futuros.length === 0) {
+            box.innerHTML = emptyHTML('🌙', 'No hay más trenes hoy desde A. Sourdeaux');
+            return;
+        }
+
+        box.innerHTML = futuros.map(s => {
+            const hora = s['A. Sourdeaux'];
+            const mins = diffMin(hora);
+            const urgClass = mins <= 5 ? ' urgent' : '';
+            const minsTxt = mins >= 0 ? `${mins} min` : 'Ya partió';
+
+            return `
+            <div class="train">
+                <div class="train-row">
+                    <span class="train-id">Servicio ${s.servicio || '?'}</span>
+                    <span class="train-clock">${hora}</span>
+                </div>
+                <div style="text-align:right;">
+                    <span class="train-countdown${urgClass}">⏱ ${minsTxt}</span>
+                </div>
+                <div class="train-actions">
+                    <button class="btn btn-wa" onclick="shareWA('${esc(s.servicio)}','${hora}')">📱 WhatsApp</button>
+                    <button class="btn btn-copy" onclick="copyTxt('${esc(s.servicio)}','${hora}')">📋 Copiar</button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    // =============================================================
+    // CALCULADORA DE DESTINO
+    // =============================================================
+    function calcDest() {
+        const dest = document.getElementById('destSelect').value;
+        const box = document.getElementById('calcResult');
+
+        if (!dest) {
+            showToast('⚠️ Elegí una estación primero');
+            return;
+        }
+
+        if (!loaded) {
+            box.innerHTML = resultHTML('warning', '⏳', 'Cargando datos...', '');
+            return;
+        }
+
+        const day = getActiveDay();
+        const servicios = DB[day][currentDir] || [];
+        const now = nowHHMM();
+
+        // Buscar el próximo tren que pase por A. Sourdeaux Y por el destino
+        const tren = servicios.find(s => {
+            const hs = s['A. Sourdeaux'];
+            const hd = s[dest];
+            return hs && hs !== '-' && hs >= now && hd && hd !== '-';
+        });
+
+        if (!tren) {
+            box.innerHTML = resultHTML('warning', '🚫',
+                'No hay más trenes que lleguen a ' + dest + ' hoy', '');
+            return;
+        }
+
+        const horaDest = tren[dest];
+        const mins = diffMin(tren['A. Sourdeaux']);
+        const dirTxt = currentDir === 'retiro' ? 'Hacia Retiro' : 'Hacia Villa Rosa';
+
+        box.innerHTML = `
+        <div class="calc-result success">
+            <div class="small">Servicio ${tren.servicio || '?'} · ${dirTxt}</div>
+            <div class="big">🕐 ${horaDest}</div>
+            <div>Llegada a <strong>${dest}</strong></div>
+            <div class="small" style="margin-top:8px;">
+                Sale de A. Sourdeaux a las ${tren['A. Sourdeaux']}
+                ${mins >= 0 ? ' (en ' + mins + ' min)' : ''}
+            </div>
+        </div>`;
+    }
+
+    // =============================================================
+    // COMPARTIR
+    // =============================================================
+    function shareWA(id, hora) {
+        const dir = currentDir === 'retiro' ? 'Hacia Retiro' : 'Hacia Villa Rosa';
+        const dia = document.getElementById('daySelect').selectedOptions[0].text;
+        const msg = `🚂 *Tren Belgrano Norte*%0A` +
+            `Servicio: *${id}*%0A` +
+            `Sale de *A. Sourdeaux*: ${hora}%0A` +
+            `Dirección: ${dir}%0A` +
+            `Día: ${dia}%0A` +
+            `📅 Horario N°21 · Vigente 19 mayo 2026`;
+        window.open('https://wa.me/?text=' + msg, '_blank');
+    }
+
+    function copyTxt(id, hora) {
+        const dir = currentDir === 'retiro' ? 'Hacia Retiro' : 'Hacia Villa Rosa';
+        const dia = document.getElementById('daySelect').selectedOptions[0].text;
+        const txt = `🚂 Tren Belgrano Norte\nServicio: ${id}\nSale de A. Sourdeaux: ${hora}\nDirección: ${dir}\nDía: ${dia}\n📅 Horario N°21 · Vigente 19 mayo 2026`;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(txt).then(() => showToast('✅ Copiado al portapapeles'));
+        } else {
+            // Fallback
+            const ta = document.createElement('textarea');
+            ta.value = txt;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast('✅ Copiado al portapapeles');
+        }
+    }
+
+    // =============================================================
+    // TEMA
+    // =============================================================
+    function toggleTheme() {
+        const dark = document.body.dataset.theme === 'dark';
+        document.body.dataset.theme = dark ? 'light' : 'dark';
+        document.querySelector('.theme-btn').textContent = dark ? '🌙' : '☀️';
+        localStorage.setItem('se-theme', dark ? 'light' : 'dark');
+    }
+
+    function loadTheme() {
+        const t = localStorage.getItem('se-theme');
+        if (t === 'dark') {
+            document.body.dataset.theme = 'dark';
+            document.querySelector('.theme-btn').textContent = '☀️';
+        }
+    }
+
+    // =============================================================
+    // UTILIDADES
+    // =============================================================
+    function nowHHMM() {
+        const d = new Date();
+        return pad(d.getHours()) + ':' + pad(d.getMinutes());
+    }
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function diffMin(hora) {
+        if (!hora) return null;
+        const [h, m] = hora.split(':').map(Number);
+        const now = new Date();
+        const target = new Date();
+        target.setHours(h, m, 0, 0);
+        let diff = Math.round((target - now) / 60000);
+        if (diff < -60) diff += 1440; // cruzó medianoche
+        return diff;
+    }
+
+    function esc(s) { return String(s || '').replace(/'/g, "\\'"); }
+
+    function emptyHTML(icon, text) {
+        return `<div class="empty"><div class="empty-icon">${icon}</div><div class="empty-text">${text}</div></div>`;
+    }
+
+    function resultHTML(type, icon, title, sub) {
+        return `<div class="calc-result ${type}"><div style="font-size:2rem">${icon}</div><div class="big" style="font-size:1.1rem">${title}</div><div class="small">${sub}</div></div>`;
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2500);
+    }
+    </script>
+</body>
+</html>
