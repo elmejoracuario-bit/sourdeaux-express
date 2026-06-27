@@ -6,11 +6,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#006633">
-    <title>Sourdeaux Express</title>
+    <title>Sourdeaux Express - Horarios Belgrano Norte</title>
     <style>
-        /* ========== RESET & VARIABLES ========== */
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
             --primary: #006633;
             --primary-light: #008040;
@@ -27,7 +26,7 @@
             --danger: #e63946;
             --success: #2d6a4f;
         }
-
+        
         [data-theme="dark"] {
             --bg: #0f0f1a;
             --card: #1a1a2e;
@@ -36,8 +35,7 @@
             --border: #2a2a40;
             --shadow: 0 2px 12px rgba(0,0,0,0.3);
         }
-
-        /* ========== BASE ========== */
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: var(--bg);
@@ -47,34 +45,32 @@
             transition: background 0.3s, color 0.3s;
             -webkit-tap-highlight-color: transparent;
         }
-
-        /* ========== LAYOUT ========== */
+        
         .app {
             max-width: 480px;
             margin: 0 auto;
             padding: 0 0 100px 0;
         }
-
-        /* ========== HEADER ========== */
+        
         .header {
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: #fff;
             padding: 24px 20px 20px;
             position: relative;
         }
-
+        
         .header h1 {
             font-size: 1.6rem;
             font-weight: 800;
             letter-spacing: -0.5px;
         }
-
+        
         .header p {
             font-size: 0.85rem;
             opacity: 0.85;
             margin-top: 4px;
         }
-
+        
         .theme-btn {
             position: absolute;
             top: 20px;
@@ -92,10 +88,9 @@
             transition: background 0.3s;
             backdrop-filter: blur(4px);
         }
-
+        
         .theme-btn:active { background: rgba(255,255,255,0.35); }
-
-        /* ========== STATUS BAR ========== */
+        
         .status {
             padding: 10px 20px;
             font-size: 0.78rem;
@@ -107,8 +102,7 @@
         .status.ok { color: var(--success); }
         .status.err { color: var(--danger); }
         .status.loading { color: var(--text-sec); }
-
-        /* ========== CARDS ========== */
+        
         .card {
             background: var(--card);
             margin: 16px;
@@ -117,7 +111,7 @@
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
         }
-
+        
         .card-title {
             font-size: 1rem;
             font-weight: 700;
@@ -127,13 +121,12 @@
             align-items: center;
             gap: 8px;
         }
-
-        /* ========== TABS (DIRECCIÓN) ========== */
+        
         .tabs {
             display: flex;
             gap: 8px;
         }
-
+        
         .tab {
             flex: 1;
             padding: 12px 8px;
@@ -148,21 +141,20 @@
             transition: all 0.25s;
             -webkit-appearance: none;
         }
-
+        
         .tab.active {
             background: var(--primary);
             color: #fff;
             border-color: var(--primary);
             box-shadow: 0 2px 8px rgba(0,102,51,0.3);
         }
-
+        
         .tab:active { transform: scale(0.97); }
-
-        /* ========== SELECT ========== */
+        
         .select-wrap {
             margin-top: 14px;
         }
-
+        
         .select-wrap label {
             display: block;
             font-size: 0.82rem;
@@ -170,7 +162,7 @@
             margin-bottom: 6px;
             color: var(--text-sec);
         }
-
+        
         .select-wrap select {
             width: 100%;
             padding: 12px 14px;
@@ -187,15 +179,40 @@
             background-repeat: no-repeat;
             background-position: right 14px center;
         }
-
+        
         .select-wrap select:focus {
             outline: none;
             border-color: var(--primary);
         }
-
-        /* ========== TRAIN CARDS ========== */
+        
+        .route-display {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: #fff;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 16px;
+            text-align: center;
+        }
+        
+        .route-display .stations {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .route-display .arrow {
+            font-size: 1.5rem;
+            margin: 0 8px;
+        }
+        
+        .route-display .direction {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+        
         .train-list { display: flex; flex-direction: column; gap: 12px; }
-
+        
         .train {
             border: 2px solid var(--border);
             border-radius: 12px;
@@ -204,7 +221,7 @@
             position: relative;
             overflow: hidden;
         }
-
+        
         .train::before {
             content: '';
             position: absolute;
@@ -213,13 +230,13 @@
             background: var(--primary);
             border-radius: 4px 0 0 4px;
         }
-
+        
         .train-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
+        
         .train-id {
             font-size: 0.8rem;
             font-weight: 700;
@@ -227,14 +244,24 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
-        .train-clock {
-            font-size: 1.8rem;
+        
+        .train-times {
+            text-align: right;
+        }
+        
+        .train-time-origin {
+            font-size: 1.3rem;
             font-weight: 800;
-            letter-spacing: -1px;
+            letter-spacing: -0.5px;
             line-height: 1;
         }
-
+        
+        .train-time-dest {
+            font-size: 0.9rem;
+            color: var(--text-sec);
+            margin-top: 4px;
+        }
+        
         .train-countdown {
             display: inline-block;
             background: var(--accent);
@@ -245,25 +272,24 @@
             font-weight: 700;
             margin-top: 4px;
         }
-
+        
         .train-countdown.urgent {
             background: var(--danger);
             color: #fff;
             animation: pulse 1s infinite;
         }
-
+        
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.6; }
         }
-
+        
         .train-actions {
             display: flex;
             gap: 8px;
             margin-top: 12px;
         }
-
-        /* ========== BUTTONS ========== */
+        
         .btn {
             flex: 1;
             padding: 10px 12px;
@@ -279,19 +305,19 @@
             transition: all 0.2s;
             -webkit-appearance: none;
         }
-
+        
         .btn:active { transform: scale(0.96); }
-
+        
         .btn-wa {
             background: var(--whatsapp);
             color: #fff;
         }
-
+        
         .btn-copy {
             background: var(--primary);
             color: #fff;
         }
-
+        
         .btn-calc {
             background: var(--accent);
             color: #1a1a2e;
@@ -300,8 +326,7 @@
             font-size: 1rem;
             margin-top: 12px;
         }
-
-        /* ========== CALCULATOR RESULT ========== */
+        
         .calc-result {
             margin-top: 16px;
             padding: 18px;
@@ -310,44 +335,42 @@
             font-weight: 600;
             animation: slideIn 0.3s ease;
         }
-
+        
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
+        
         .calc-result.success {
             background: linear-gradient(135deg, var(--success), var(--primary));
             color: #fff;
         }
-
+        
         .calc-result.warning {
             background: var(--accent);
             color: #1a1a2e;
         }
-
+        
         .calc-result .big {
             font-size: 1.6rem;
             font-weight: 800;
             margin: 8px 0;
         }
-
+        
         .calc-result .small {
             font-size: 0.82rem;
             opacity: 0.85;
         }
-
-        /* ========== EMPTY STATE ========== */
+        
         .empty {
             text-align: center;
             padding: 40px 20px;
             color: var(--text-sec);
         }
-
+        
         .empty-icon { font-size: 3rem; margin-bottom: 12px; }
         .empty-text { font-size: 0.95rem; font-weight: 500; }
-
-        /* ========== FOOTER ========== */
+        
         .footer {
             text-align: center;
             padding: 24px 20px;
@@ -355,8 +378,7 @@
             color: var(--text-sec);
             line-height: 1.8;
         }
-
-        /* ========== TOAST ========== */
+        
         .toast {
             position: fixed;
             bottom: 30px;
@@ -374,455 +396,410 @@
             pointer-events: none;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
-
+        
         .toast.show {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
-
-        /* ========== RESPONSIVE ========== */
+        
         @media (max-width: 380px) {
             .header h1 { font-size: 1.35rem; }
-            .train-clock { font-size: 1.5rem; }
+            .train-time-origin { font-size: 1.1rem; }
             .card { padding: 16px; margin: 12px; }
         }
     </style>
 </head>
 <body>
     <div class="app">
-
-        <!-- HEADER -->
         <div class="header">
             <h1>🚂 Sourdeaux Express</h1>
             <p>Belgrano Norte · Horario N°21</p>
             <button class="theme-btn" onclick="toggleTheme()" aria-label="Cambiar tema">🌙</button>
         </div>
 
-        <!-- STATUS -->
         <div id="status" class="status loading">⏳ Cargando horarios...</div>
 
-        <!-- CONFIGURACIÓN -->
         <div class="card">
-            <div class="card-title">📍 Configuración</div>
+            <div class="card-title">📍 Configuración de viaje</div>
 
             <div class="tabs">
-                <button class="tab active" data-dir="retiro" onclick="setDir('retiro', this)">🏙️ Hacia Retiro</button>
+                <button class="tab active" data-dir="auto" onclick="setDir('auto', this)">🔄 Auto</button>
+                <button class="tab" data-dir="retiro" onclick="setDir('retiro', this)">🏙️ Hacia Retiro</button>
                 <button class="tab" data-dir="villa_rosa" onclick="setDir('villa_rosa', this)">🌳 Hacia Villa Rosa</button>
             </div>
 
             <div class="select-wrap">
-                <label for="daySelect">Tipo de día</label>
+                <label for="originSelect">🚉 Estación de origen</label>
+                <select id="originSelect" onchange="updateRoute()">
+                    <option value="">Seleccioná estación...</option>
+                </select>
+            </div>
+
+            <div class="select-wrap">
+                <label for="destSelect">🎯 Estación de destino</label>
+                <select id="destSelect" onchange="updateRoute()">
+                    <option value="">Seleccioná estación...</option>
+                </select>
+            </div>
+
+            <div class="select-wrap">
+                <label for="daySelect">📅 Tipo de día</label>
                 <select id="daySelect" onchange="render()">
-                    <option value="auto">📅 Auto-detectar (hoy)</option>
+                    <option value="auto">Auto-detectar (hoy)</option>
                     <option value="lunes_a_viernes">Lunes a Viernes</option>
                     <option value="sabados">Sábados</option>
                     <option value="domingos_y_feriados">Domingos y Feriados</option>
                 </select>
             </div>
+
+            <div id="routeDisplay" class="route-display" style="display:none;">
+                <div class="stations">
+                    <span id="originName">-</span>
+                    <span class="arrow">→</span>
+                    <span id="destName">-</span>
+                </div>
+                <div class="direction" id="directionText">-</div>
+            </div>
         </div>
 
-        <!-- PRÓXIMOS TRENES -->
         <div class="card">
-            <div class="card-title">🕐 Próximos trenes desde A. Sourdeaux</div>
+            <div class="card-title"> Próximos trenes</div>
             <div id="trainList" class="train-list">
                 <div class="empty">
                     <div class="empty-icon">⏳</div>
-                    <div class="empty-text">Cargando...</div>
+                    <div class="empty-text">Seleccioná origen y destino</div>
                 </div>
             </div>
         </div>
 
-        <!-- CALCULADORA -->
-        <div class="card">
-            <div class="card-title">🎯 ¿A qué hora llego a...?</div>
-            <div class="select-wrap">
-                <label for="destSelect">Estación de destino</label>
-                <select id="destSelect">
-                    <option value="">Elegí una estación...</option>
-                </select>
-            </div>
-            <button class="btn btn-calc" onclick="calcDest()">🔍 Calcular llegada</button>
-            <div id="calcResult"></div>
-        </div>
-
-        <!-- FOOTER -->
         <div class="footer">
             📅 Horario N°21 · Vigente desde 19 de mayo de 2026<br>
-            ⚡ Datos oficiales · Funciona offline
+             Datos oficiales · Funciona offline
         </div>
     </div>
 
-    <!-- TOAST -->
     <div id="toast" class="toast"></div>
 
     <script>
-    /* ============================================================
-       SOURDEAUX EXPRESS — Lógica completa
-       ============================================================ */
-
-    // --- Estaciones en orden geográfico ---
-    const EST = [
-        "Retiro","Saldías","Ciudad Universitaria","A. del Valle","M. Padilla",
-        "Florida","Munro","Carapachay","V. Adelina","Boulogne","Montes",
-        "Don Torcuato","A. Sourdeaux","Ciudad Villa de Mayo","Ciudad Los Polvorines",
-        "Ciudad Ing. P. Nogues","Ciudad Grand Bourg","Tierras Altas",
-        "Ciudad Tortuguitas","M. Alberti","Del Viso","Cecilia Grierson","Villa Rosa"
-    ];
-
-    // --- Estado global ---
-    let DB = {
-        lunes_a_viernes: { retiro: [], villa_rosa: [] },
-        sabados:         { retiro: [], villa_rosa: [] },
-        domingos_y_feriados: { retiro: [], villa_rosa: [] }
-    };
-    let loaded = false;
-    let currentDir = 'retiro';
-
-    // =============================================================
-    // INICIALIZACIÓN
-    // =============================================================
-    (async function boot() {
-        fillDestSelect();
-        loadTheme();
-        autoDetectDay();
-        await loadAll();
-        render();
-        setInterval(render, 60000); // actualizar cada minuto
-    })();
-
-    // =============================================================
-    // CARGA Y NORMALIZACIÓN DE JSONs
-    // =============================================================
-    async function loadAll() {
-        const st = document.getElementById('status');
-        let ok = 0, fail = [];
-
-        const files = [
-            { file: 'horarios_lunes_a_viernes.json', key: 'lunes_a_viernes' },
-            { file: 'horarios_sabados.json',         key: 'sabados' },
-            { file: 'Qwen_json_20260627_9pxopqbdk.json', key: 'domingos_y_feriados' }
+        const EST = [
+            "Retiro","Saldías","Ciudad Universitaria","A. del Valle","M. Padilla",
+            "Florida","Munro","Carapachay","V. Adelina","Boulogne","Montes",
+            "Don Torcuato","A. Sourdeaux","Ciudad Villa de Mayo","Ciudad Los Polvorines",
+            "Ciudad Ing. P. Nogues","Ciudad Grand Bourg","Tierras Altas",
+            "Ciudad Tortuguitas","M. Alberti","Del Viso","Cecilia Grierson","Villa Rosa"
         ];
 
-        for (const f of files) {
-            try {
-                const raw = await fetch(f.file).then(r => {
-                    if (!r.ok) throw new Error(r.status);
-                    return r.json();
-                });
-                const parsed = parseFile(raw, f.key);
-                DB[f.key].retiro = parsed.retiro;
-                DB[f.key].villa_rosa = parsed.villa_rosa;
-                ok++;
-                console.log(`✅ ${f.key}: ${parsed.retiro.length} retiro + ${parsed.villa_rosa.length} villa_rosa`);
-            } catch (e) {
-                fail.push(f.key);
-                console.error(`❌ ${f.file}:`, e);
-            }
-        }
-
-        loaded = ok > 0;
-
-        if (ok === 3) {
-            st.className = 'status ok';
-            const total = Object.values(DB).reduce((s, d) => s + d.retiro.length + d.villa_rosa.length, 0);
-            st.textContent = `✅ Horarios cargados · ${total} servicios totales`;
-        } else if (ok > 0) {
-            st.className = 'status err';
-            st.textContent = `⚠️ ${ok}/3 archivos cargados. Faltan: ${fail.join(', ')}`;
-        } else {
-            st.className = 'status err';
-            st.textContent = '❌ Error al cargar. Verificá que los 3 JSON estén en la misma carpeta.';
-        }
-    }
-
-    /**
-     * Parsea un JSON y devuelve { retiro: [...], villa_rosa: [...] }
-     * Soporta múltiples estructuras:
-     *   - { servicios_hacia_retiro: [...], servicios_hacia_villa_rosa: [...] }
-     *   - { servicios: { domingos_y_feriados: { hacia_retiro: [...], hacia_villa_rosa: [...] } } }
-     *   - { hacia_retiro: [...], hacia_villa_rosa: [...] }
-     */
-    function parseFile(raw, dayKey) {
-        let retiroRaw = [];
-        let villaRaw = [];
-
-        // Estructura 1: plana con prefijo "servicios_"
-        if (raw.servicios_hacia_retiro) {
-            retiroRaw = raw.servicios_hacia_retiro;
-            villaRaw = raw.servicios_hacia_villa_rosa || [];
-        }
-        // Estructura 2: anidada bajo "servicios"
-        else if (raw.servicios && typeof raw.servicios === 'object') {
-            const inner = raw.servicios[dayKey] || raw.servicios;
-            retiroRaw = inner.hacia_retiro || [];
-            villaRaw = inner.hacia_villa_rosa || [];
-        }
-        // Estructura 3: directa
-        else if (raw.hacia_retiro) {
-            retiroRaw = raw.hacia_retiro;
-            villaRaw = raw.hacia_villa_rosa || [];
-        }
-
-        return {
-            retiro: retiroRaw.map(normalizeService),
-            villa_rosa: villaRaw.map(normalizeService)
+        let DB = {
+            lunes_a_viernes: { retiro: [], villa_rosa: [] },
+            sabados: { retiro: [], villa_rosa: [] },
+            domingos_y_feriados: { retiro: [], villa_rosa: [] }
         };
-    }
+        let loaded = false;
+        let currentDir = 'auto';
 
-    /**
-     * Normaliza un servicio: elimina espacios extra en keys y valores
-     * Ej: { "A. Sourdeaux ": "06:54 " } → { "A. Sourdeaux": "06:54" }
-     */
-    function normalizeService(svc) {
-        const clean = {};
-        for (const [k, v] of Object.entries(svc)) {
-            const key = k.trim();
-            const val = typeof v === 'string' ? v.trim() : v;
-            clean[key] = val;
-        }
-        return clean;
-    }
+        (async function boot() {
+            fillStationSelects();
+            loadTheme();
+            autoDetectDay();
+            await loadAll();
+            updateRoute();
+            setInterval(render, 60000);
+        })();
 
-    // =============================================================
-    // UI: DIRECCIÓN
-    // =============================================================
-    function setDir(dir, btn) {
-        currentDir = dir;
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        if (btn) btn.classList.add('active');
-        document.getElementById('calcResult').innerHTML = '';
-        render();
-    }
+        async function loadAll() {
+            const st = document.getElementById('status');
+            let ok = 0, fail = [];
 
-    // =============================================================
-    // UI: AUTO-DETECTAR DÍA
-    // =============================================================
-    function autoDetectDay() {
-        const day = new Date().getDay(); // 0=dom, 6=sab
-        const sel = document.getElementById('daySelect');
-        if (day === 0) sel.value = 'domingos_y_feriados';
-        else if (day === 6) sel.value = 'sabados';
-        else sel.value = 'lunes_a_viernes';
-    }
+            const files = [
+                { file: 'horarios_lunes_a_viernes.json', key: 'lunes_a_viernes' },
+                { file: 'horarios_sabados.json', key: 'sabados' },
+                { file: 'Qwen_json_20260627_9pxopqbdk.json', key: 'domingos_y_feriados' }
+            ];
 
-    function getActiveDay() {
-        const v = document.getElementById('daySelect').value;
-        if (v === 'auto') {
-            const d = new Date().getDay();
-            if (d === 0) return 'domingos_y_feriados';
-            if (d === 6) return 'sabados';
-            return 'lunes_a_viernes';
-        }
-        return v;
-    }
-
-    // =============================================================
-    // UI: POBLAR SELECTOR DE DESTINOS
-    // =============================================================
-    function fillDestSelect() {
-        const sel = document.getElementById('destSelect');
-        EST.forEach(e => {
-            if (e !== 'A. Sourdeaux') {
-                const o = document.createElement('option');
-                o.value = e;
-                o.textContent = e;
-                sel.appendChild(o);
+            for (const f of files) {
+                try {
+                    const raw = await fetch(f.file).then(r => {
+                        if (!r.ok) throw new Error(r.status);
+                        return r.json();
+                    });
+                    const parsed = parseFile(raw, f.key);
+                    DB[f.key].retiro = parsed.retiro;
+                    DB[f.key].villa_rosa = parsed.villa_rosa;
+                    ok++;
+                    console.log(`✅ ${f.key}: ${parsed.retiro.length} retiro + ${parsed.villa_rosa.length} villa_rosa`);
+                } catch (e) {
+                    fail.push(f.key);
+                    console.error(`❌ ${f.file}:`, e);
+                }
             }
-        });
-    }
 
-    // =============================================================
-    // RENDER: PRÓXIMOS TRENES
-    // =============================================================
-    function render() {
-        const box = document.getElementById('trainList');
+            loaded = ok > 0;
 
-        if (!loaded) {
-            box.innerHTML = emptyHTML('⏳', 'Cargando horarios...');
-            return;
+            if (ok === 3) {
+                st.className = 'status ok';
+                const total = Object.values(DB).reduce((s, d) => s + d.retiro.length + d.villa_rosa.length, 0);
+                st.textContent = `✅ Horarios cargados · ${total} servicios totales`;
+            } else if (ok > 0) {
+                st.className = 'status err';
+                st.textContent = `️ ${ok}/3 archivos cargados. Faltan: ${fail.join(', ')}`;
+            } else {
+                st.className = 'status err';
+                st.textContent = '❌ Error al cargar. Verificá que los 3 JSON estén en la misma carpeta.';
+            }
         }
 
-        const day = getActiveDay();
-        const servicios = DB[day][currentDir] || [];
-        const now = nowHHMM();
+        function parseFile(raw, dayKey) {
+            let retiroRaw = [];
+            let villaRaw = [];
 
-        // Filtrar: trenes que pasan por A. Sourdeaux y aún no pasaron
-        const futuros = servicios
-            .filter(s => {
-                const h = s['A. Sourdeaux'];
-                return h && h !== '-' && h >= now;
-            })
-            .slice(0, 8);
+            if (raw.servicios_hacia_retiro) {
+                retiroRaw = raw.servicios_hacia_retiro;
+                villaRaw = raw.servicios_hacia_villa_rosa || [];
+            } else if (raw.servicios && typeof raw.servicios === 'object') {
+                const inner = raw.servicios[dayKey] || raw.servicios;
+                retiroRaw = inner.hacia_retiro || [];
+                villaRaw = inner.hacia_villa_rosa || [];
+            } else if (raw.hacia_retiro) {
+                retiroRaw = raw.hacia_retiro;
+                villaRaw = raw.hacia_villa_rosa || [];
+            }
 
-        if (futuros.length === 0) {
-            box.innerHTML = emptyHTML('🌙', 'No hay más trenes hoy desde A. Sourdeaux');
-            return;
+            return {
+                retiro: retiroRaw.map(normalizeService),
+                villa_rosa: villaRaw.map(normalizeService)
+            };
         }
 
-        box.innerHTML = futuros.map(s => {
-            const hora = s['A. Sourdeaux'];
-            const mins = diffMin(hora);
-            const urgClass = mins <= 5 ? ' urgent' : '';
-            const minsTxt = mins >= 0 ? `${mins} min` : 'Ya partió';
-
-            return `
-            <div class="train">
-                <div class="train-row">
-                    <span class="train-id">Servicio ${s.servicio || '?'}</span>
-                    <span class="train-clock">${hora}</span>
-                </div>
-                <div style="text-align:right;">
-                    <span class="train-countdown${urgClass}">⏱ ${minsTxt}</span>
-                </div>
-                <div class="train-actions">
-                    <button class="btn btn-wa" onclick="shareWA('${esc(s.servicio)}','${hora}')">📱 WhatsApp</button>
-                    <button class="btn btn-copy" onclick="copyTxt('${esc(s.servicio)}','${hora}')">📋 Copiar</button>
-                </div>
-            </div>`;
-        }).join('');
-    }
-
-    // =============================================================
-    // CALCULADORA DE DESTINO
-    // =============================================================
-    function calcDest() {
-        const dest = document.getElementById('destSelect').value;
-        const box = document.getElementById('calcResult');
-
-        if (!dest) {
-            showToast('⚠️ Elegí una estación primero');
-            return;
+        function normalizeService(svc) {
+            const clean = {};
+            for (const [k, v] of Object.entries(svc)) {
+                const key = k.trim();
+                const val = typeof v === 'string' ? v.trim() : v;
+                clean[key] = val;
+            }
+            return clean;
         }
 
-        if (!loaded) {
-            box.innerHTML = resultHTML('warning', '⏳', 'Cargando datos...', '');
-            return;
+        function fillStationSelects() {
+            const originSelect = document.getElementById('originSelect');
+            const destSelect = document.getElementById('destSelect');
+            
+            EST.forEach(e => {
+                const o1 = document.createElement('option');
+                o1.value = e;
+                o1.textContent = e;
+                originSelect.appendChild(o1);
+                
+                const o2 = document.createElement('option');
+                o2.value = e;
+                o2.textContent = e;
+                destSelect.appendChild(o2);
+            });
+
+            // Set default to A. Sourdeaux
+            originSelect.value = 'A. Sourdeaux';
         }
 
-        const day = getActiveDay();
-        const servicios = DB[day][currentDir] || [];
-        const now = nowHHMM();
-
-        // Buscar el próximo tren que pase por A. Sourdeaux Y por el destino
-        const tren = servicios.find(s => {
-            const hs = s['A. Sourdeaux'];
-            const hd = s[dest];
-            return hs && hs !== '-' && hs >= now && hd && hd !== '-';
-        });
-
-        if (!tren) {
-            box.innerHTML = resultHTML('warning', '🚫',
-                'No hay más trenes que lleguen a ' + dest + ' hoy', '');
-            return;
+        function setDir(dir, btn) {
+            currentDir = dir;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            updateRoute();
         }
 
-        const horaDest = tren[dest];
-        const mins = diffMin(tren['A. Sourdeaux']);
-        const dirTxt = currentDir === 'retiro' ? 'Hacia Retiro' : 'Hacia Villa Rosa';
-
-        box.innerHTML = `
-        <div class="calc-result success">
-            <div class="small">Servicio ${tren.servicio || '?'} · ${dirTxt}</div>
-            <div class="big">🕐 ${horaDest}</div>
-            <div>Llegada a <strong>${dest}</strong></div>
-            <div class="small" style="margin-top:8px;">
-                Sale de A. Sourdeaux a las ${tren['A. Sourdeaux']}
-                ${mins >= 0 ? ' (en ' + mins + ' min)' : ''}
-            </div>
-        </div>`;
-    }
-
-    // =============================================================
-    // COMPARTIR
-    // =============================================================
-    function shareWA(id, hora) {
-        const dir = currentDir === 'retiro' ? 'Hacia Retiro' : 'Hacia Villa Rosa';
-        const dia = document.getElementById('daySelect').selectedOptions[0].text;
-        const msg = `🚂 *Tren Belgrano Norte*%0A` +
-            `Servicio: *${id}*%0A` +
-            `Sale de *A. Sourdeaux*: ${hora}%0A` +
-            `Dirección: ${dir}%0A` +
-            `Día: ${dia}%0A` +
-            `📅 Horario N°21 · Vigente 19 mayo 2026`;
-        window.open('https://wa.me/?text=' + msg, '_blank');
-    }
-
-    function copyTxt(id, hora) {
-        const dir = currentDir === 'retiro' ? 'Hacia Retiro' : 'Hacia Villa Rosa';
-        const dia = document.getElementById('daySelect').selectedOptions[0].text;
-        const txt = `🚂 Tren Belgrano Norte\nServicio: ${id}\nSale de A. Sourdeaux: ${hora}\nDirección: ${dir}\nDía: ${dia}\n📅 Horario N°21 · Vigente 19 mayo 2026`;
-
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(txt).then(() => showToast('✅ Copiado al portapapeles'));
-        } else {
-            // Fallback
-            const ta = document.createElement('textarea');
-            ta.value = txt;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            showToast('✅ Copiado al portapapeles');
+        function autoDetectDay() {
+            const day = new Date().getDay();
+            const sel = document.getElementById('daySelect');
+            if (day === 0) sel.value = 'domingos_y_feriados';
+            else if (day === 6) sel.value = 'sabados';
+            else sel.value = 'lunes_a_viernes';
         }
-    }
 
-    // =============================================================
-    // TEMA
-    // =============================================================
-    function toggleTheme() {
-        const dark = document.body.dataset.theme === 'dark';
-        document.body.dataset.theme = dark ? 'light' : 'dark';
-        document.querySelector('.theme-btn').textContent = dark ? '🌙' : '☀️';
-        localStorage.setItem('se-theme', dark ? 'light' : 'dark');
-    }
-
-    function loadTheme() {
-        const t = localStorage.getItem('se-theme');
-        if (t === 'dark') {
-            document.body.dataset.theme = 'dark';
-            document.querySelector('.theme-btn').textContent = '☀️';
+        function getActiveDay() {
+            const v = document.getElementById('daySelect').value;
+            if (v === 'auto') {
+                const d = new Date().getDay();
+                if (d === 0) return 'domingos_y_feriados';
+                if (d === 6) return 'sabados';
+                return 'lunes_a_viernes';
+            }
+            return v;
         }
-    }
 
-    // =============================================================
-    // UTILIDADES
-    // =============================================================
-    function nowHHMM() {
-        const d = new Date();
-        return pad(d.getHours()) + ':' + pad(d.getMinutes());
-    }
+        function updateRoute() {
+            const origin = document.getElementById('originSelect').value;
+            const dest = document.getElementById('destSelect').value;
+            const routeDisplay = document.getElementById('routeDisplay');
+            
+            if (!origin || !dest || origin === dest) {
+                routeDisplay.style.display = 'none';
+                document.getElementById('trainList').innerHTML = `
+                    <div class="empty">
+                        <div class="empty-icon">⏳</div>
+                        <div class="empty-text">${!origin || !dest ? 'Seleccioná origen y destino' : 'Origen y destino deben ser diferentes'}</div>
+                    </div>`;
+                return;
+            }
 
-    function pad(n) { return String(n).padStart(2, '0'); }
+            routeDisplay.style.display = 'block';
+            document.getElementById('originName').textContent = origin;
+            document.getElementById('destName').textContent = dest;
 
-    function diffMin(hora) {
-        if (!hora) return null;
-        const [h, m] = hora.split(':').map(Number);
-        const now = new Date();
-        const target = new Date();
-        target.setHours(h, m, 0, 0);
-        let diff = Math.round((target - now) / 60000);
-        if (diff < -60) diff += 1440; // cruzó medianoche
-        return diff;
-    }
+            // Auto-detect direction based on station positions
+            const originIdx = EST.indexOf(origin);
+            const destIdx = EST.indexOf(dest);
+            
+            let direction;
+            if (currentDir === 'auto') {
+                direction = originIdx < destIdx ? 'villa_rosa' : 'retiro';
+            } else {
+                direction = currentDir;
+            }
 
-    function esc(s) { return String(s || '').replace(/'/g, "\\'"); }
+            const dirText = direction === 'retiro' ? '🏙️ Hacia Retiro' : '🌳 Hacia Villa Rosa';
+            document.getElementById('directionText').textContent = dirText;
+            
+            render();
+        }
 
-    function emptyHTML(icon, text) {
-        return `<div class="empty"><div class="empty-icon">${icon}</div><div class="empty-text">${text}</div></div>`;
-    }
+        function render() {
+            const origin = document.getElementById('originSelect').value;
+            const dest = document.getElementById('destSelect').value;
+            const box = document.getElementById('trainList');
 
-    function resultHTML(type, icon, title, sub) {
-        return `<div class="calc-result ${type}"><div style="font-size:2rem">${icon}</div><div class="big" style="font-size:1.1rem">${title}</div><div class="small">${sub}</div></div>`;
-    }
+            if (!loaded || !origin || !dest || origin === dest) {
+                if (loaded) updateRoute();
+                return;
+            }
 
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2500);
-    }
+            const day = getActiveDay();
+            const originIdx = EST.indexOf(origin);
+            const destIdx = EST.indexOf(dest);
+            
+            let direction;
+            if (currentDir === 'auto') {
+                direction = originIdx < destIdx ? 'villa_rosa' : 'retiro';
+            } else {
+                direction = currentDir;
+            }
+
+            const servicios = DB[day][direction] || [];
+            const now = nowHHMM();
+
+            const futuros = servicios
+                .filter(s => {
+                    const hOrigin = s[origin];
+                    const hDest = s[dest];
+                    return hOrigin && hOrigin !== '-' && hDest && hDest !== '-' && hOrigin >= now;
+                })
+                .slice(0, 8);
+
+            if (futuros.length === 0) {
+                box.innerHTML = `<div class="empty"><div class="empty-icon">🌙</div><div class="empty-text">No hay más trenes hoy desde ${origin}</div></div>`;
+                return;
+            }
+
+            box.innerHTML = futuros.map(s => {
+                const horaOrigin = s[origin];
+                const horaDest = s[dest];
+                const mins = diffMin(horaOrigin);
+                const urgClass = mins <= 5 ? ' urgent' : '';
+                const minsTxt = mins >= 0 ? `${mins} min` : 'Ya partió';
+
+                return `
+                <div class="train">
+                    <div class="train-row">
+                        <span class="train-id">Servicio ${s.servicio || '?'}</span>
+                        <div class="train-times">
+                            <div class="train-time-origin">${horaOrigin}</div>
+                            <div class="train-time-dest">Llega ${horaDest}</div>
+                        </div>
+                    </div>
+                    <div style="text-align:right;">
+                        <span class="train-countdown${urgClass}">⏱ ${minsTxt}</span>
+                    </div>
+                    <div class="train-actions">
+                        <button class="btn btn-wa" onclick="shareWA('${esc(s.servicio)}','${horaOrigin}','${horaDest}','${origin}','${dest}')">📱 WhatsApp</button>
+                        <button class="btn btn-copy" onclick="copyTxt('${esc(s.servicio)}','${horaOrigin}','${horaDest}','${origin}','${dest}')"> Copiar</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function shareWA(id, horaOrigin, horaDest, origin, dest) {
+            const dir = currentDir === 'retiro' ? 'Hacia Retiro' : currentDir === 'villa_rosa' ? 'Hacia Villa Rosa' : 'Automático';
+            const dia = document.getElementById('daySelect').selectedOptions[0].text;
+            const msg = `🚂 *Tren Belgrano Norte*%0A` +
+                `Servicio: *${id}*%0A` +
+                `De: *${origin}* (${horaOrigin})%0A` +
+                `A: *${dest}* (${horaDest})%0A` +
+                `Dirección: ${dir}%0A` +
+                `Día: ${dia}%0A` +
+                `📅 Horario N°21 · Vigente 19 mayo 2026`;
+            window.open('https://wa.me/?text=' + msg, '_blank');
+        }
+
+        function copyTxt(id, horaOrigin, horaDest, origin, dest) {
+            const dir = currentDir === 'retiro' ? 'Hacia Retiro' : currentDir === 'villa_rosa' ? 'Hacia Villa Rosa' : 'Automático';
+            const dia = document.getElementById('daySelect').selectedOptions[0].text;
+            const txt = `🚂 Tren Belgrano Norte\nServicio: ${id}\nDe: ${origin} (${horaOrigin})\nA: ${dest} (${horaDest})\nDirección: ${dir}\nDía: ${dia}\n📅 Horario N°21 · Vigente 19 mayo 2026`;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(txt).then(() => showToast('✅ Copiado al portapapeles'));
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = txt;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('✅ Copiado al portapapeles');
+            }
+        }
+
+        function toggleTheme() {
+            const dark = document.body.dataset.theme === 'dark';
+            document.body.dataset.theme = dark ? 'light' : 'dark';
+            document.querySelector('.theme-btn').textContent = dark ? '🌙' : '☀️';
+            localStorage.setItem('se-theme', dark ? 'light' : 'dark');
+        }
+
+        function loadTheme() {
+            const t = localStorage.getItem('se-theme');
+            if (t === 'dark') {
+                document.body.dataset.theme = 'dark';
+                document.querySelector('.theme-btn').textContent = '☀️';
+            }
+        }
+
+        function nowHHMM() {
+            const d = new Date();
+            return pad(d.getHours()) + ':' + pad(d.getMinutes());
+        }
+
+        function pad(n) { return String(n).padStart(2, '0'); }
+
+        function diffMin(hora) {
+            if (!hora) return null;
+            const [h, m] = hora.split(':').map(Number);
+            const now = new Date();
+            const target = new Date();
+            target.setHours(h, m, 0, 0);
+            let diff = Math.round((target - now) / 60000);
+            if (diff < -60) diff += 1440;
+            return diff;
+        }
+
+        function esc(s) { return String(s || '').replace(/'/g, "\\'"); }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        }
     </script>
 </body>
 </html>
